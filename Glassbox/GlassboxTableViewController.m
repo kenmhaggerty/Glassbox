@@ -11,33 +11,20 @@
 #pragma mark - // IMPORTS (Private) //
 
 #import "GlassboxTableViewController.h"
+#import "GlassboxCell.h"
 
 #pragma mark - // DEFINITIONS (Private) //
 
+#define SIDEBAR_WIDTH_PERCENT 0.75
+
 @interface GlassboxTableViewController ()
-@property (nonatomic, strong) NSMutableArray *listOfPlayers;
 @end
 
 @implementation GlassboxTableViewController
 
 #pragma mark - // SETTERS AND GETTERS //
 
-@synthesize listOfPlayers = _listOfPlayers;
-
-- (void)setListOfPlayers:(NSMutableArray *)listOfPlayers
-{
-    _listOfPlayers = listOfPlayers;
-}
-
-- (NSMutableArray *)listOfPlayers
-{
-    if (!_listOfPlayers)
-    {
-        _listOfPlayers = [[NSMutableArray alloc] init];
-        [_listOfPlayers addObject:[NSString stringWithFormat:@"Ken H."]];
-    }
-    return _listOfPlayers;
-}
+@synthesize datasource = _datasource;
 
 #pragma mark - // INITS AND LOADS //
 
@@ -61,6 +48,12 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width*SIDEBAR_WIDTH_PERCENT, self.view.frame.size.height)];
+//}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -68,6 +61,11 @@
 }
 
 #pragma mark - // PRIVATE FUNCTIONS (Miscellaneous) //
+
+- (IBAction)addPlayer
+{
+    [self.datasource addPlayer];
+}
 
 // TableView data source //
 
@@ -80,16 +78,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.listOfPlayers.count;
+    return self.datasource.arrayOfPlayers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"GlassboxCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    GlassboxCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.textLabel.text = [self.listOfPlayers objectAtIndex:indexPath.row];
-    cell.detailTextLabel.text = @"LOADED SUCCESSFULLY";
+    cell.name.text = [self.datasource.arrayOfPlayers objectAtIndex:indexPath.row];
+    cell.action.text = @"LOADED SUCCESSFULLY";
+    cell.time.text = @"Just now";
     
     return cell;
 }

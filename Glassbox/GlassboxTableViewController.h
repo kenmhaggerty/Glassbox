@@ -14,8 +14,14 @@
 
 #pragma mark - // PROTOCOLS //
 
+@protocol GlassboxTableViewDelegate <NSObject>
+@property (nonatomic, weak) NSMutableArray *arrayOfPlayers;
+- (void)addPlayer;
+@end
+
 #pragma mark - // DEFINITIONS (Public) //
 
 @interface GlassboxTableViewController : UITableViewController
-
+@property (nonatomic, strong) id <GlassboxTableViewDelegate> datasource;
+- (IBAction)addPlayer;
 @end
