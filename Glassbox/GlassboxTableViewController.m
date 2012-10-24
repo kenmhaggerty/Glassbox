@@ -12,6 +12,7 @@
 
 #import "GlassboxTableViewController.h"
 #import "GlassboxCell.h"
+#import "Player.h"
 
 #pragma mark - // DEFINITIONS (Private) //
 
@@ -86,9 +87,10 @@
     static NSString *CellIdentifier = @"GlassboxCell";
     GlassboxCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.name.text = [self.datasource.arrayOfPlayers objectAtIndex:indexPath.row];
+    cell.name.text = [[self.datasource.arrayOfPlayers objectAtIndex:indexPath.row] username];
     cell.action.text = @"LOADED SUCCESSFULLY";
     cell.time.text = @"Just now";
+    cell.photo = [[self.datasource.arrayOfPlayers objectAtIndex:indexPath.row] photo];
     
     return cell;
 }

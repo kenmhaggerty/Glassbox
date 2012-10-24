@@ -12,14 +12,17 @@
 
 #import "GlassboxViewController.h"
 #import "GlassboxTableViewController.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "Player.h"
 
 #pragma mark - // DEFINITIONS (Private) //
 
-@interface GlassboxViewController () <GlassboxTableViewDelegate>
+@interface GlassboxViewController () <GlassboxTableViewDelegate> // UIImagePickerControllerDelegate, UINavigationControllerDelegate
 @property (nonatomic, weak) UITableView *tableView;
 - (void)alertAddPlayer;
 - (void)alertInvalidPlayer;
 - (void)alertAddPhoto;
+//- (void)dismissImagePicker;
 @end
 
 @implementation GlassboxViewController
@@ -103,9 +106,48 @@
 
 - (void)alertAddPhoto
 {
-    NSLog(@"WILL ADD PHOTO");
+//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+//    {
+//        NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+//        if ([mediaTypes containsObject:(NSString *)kUTTypeImage])
+//        {
+//            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+//            imagePickerController.delegate = self;
+//            imagePickerController.allowsEditing = YES;
+//            imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+//            imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+//            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+////            [self presentViewController:imagePickerController animated:YES completion:nil];
+//            [self presentModalViewController:imagePickerController animated:YES];
+//            return;
+//        }
+//    }
     [self.tableView reloadData];
 }
+
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+//    if (!image) image = [info objectForKey:UIImagePickerControllerOriginalImage];
+//    if (image)
+//    {
+//        [[self.arrayOfPlayers lastObject] setPhoto:image];
+//    }
+//    [self dismissImagePicker];
+//}
+//
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+//{
+//    [self dismissImagePicker];
+//}
+//
+//- (void)dismissImagePicker
+//{
+////    [self dismissViewControllerAnimated:YES completion:^{
+////        [self.tableView reloadData];
+////    }];
+//    [self dismissModalViewControllerAnimated:YES];
+//}
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -118,7 +160,7 @@
             {
                 if ([[[alertView textFieldAtIndex:0] text] length] != 0)
                 {
-                    [self.arrayOfPlayers addObject:[NSMutableString stringWithString:[[alertView textFieldAtIndex:0] text]]];
+                    [self.arrayOfPlayers addObject:[[Player alloc] initWithUsername:[[alertView textFieldAtIndex:0] text]]];
                     [self alertAddPhoto];
                 }
                 else [self alertInvalidPlayer];
