@@ -18,4 +18,5 @@
 
 @interface GlassboxViewController : UIViewController
 @property (nonatomic, strong) NSMutableArray *arrayOfPlayers;
+- (IBAction)addPlayer:(UIBarButtonItem *)sender;
 @end

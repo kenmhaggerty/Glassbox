@@ -17,7 +17,11 @@
 		7D25A5A1163622F000E316DC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D25A5A0163622F000E316DC /* Default@2x.png */; };
 		7D25A5A3163622F000E316DC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D25A5A2163622F000E316DC /* Default-568h@2x.png */; };
 		7D25A5A6163622F000E316DC /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D25A5A4163622F000E316DC /* MainStoryboard.storyboard */; };
-		7D25A5A9163622F000E316DC /* GlassboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D25A5A8163622F000E316DC /* GlassboxViewController.m */; };
+		7D25A5B1163623EE00E316DC /* GlassboxTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D25A5B0163623EE00E316DC /* GlassboxTableViewController.m */; };
+		7D25A5B416373A2100E316DC /* GlassboxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D25A5B316373A2100E316DC /* GlassboxCell.m */; };
+		7D25A5B716373B9300E316DC /* GlassboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D25A5B616373B9300E316DC /* GlassboxViewController.m */; };
+		7D25A5B916374CFA00E316DC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D25A5B816374CFA00E316DC /* MobileCoreServices.framework */; };
+		7D25A5BC163752D300E316DC /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D25A5BB163752D300E316DC /* Player.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +39,15 @@
 		7D25A5A0163622F000E316DC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		7D25A5A2163622F000E316DC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7D25A5A5163622F000E316DC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		7D25A5A7163622F000E316DC /* GlassboxViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlassboxViewController.h; sourceTree = "<group>"; };
-		7D25A5A8163622F000E316DC /* GlassboxViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlassboxViewController.m; sourceTree = "<group>"; };
+		7D25A5AF163623EE00E316DC /* GlassboxTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlassboxTableViewController.h; sourceTree = "<group>"; };
+		7D25A5B0163623EE00E316DC /* GlassboxTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlassboxTableViewController.m; sourceTree = "<group>"; };
+		7D25A5B216373A2100E316DC /* GlassboxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlassboxCell.h; sourceTree = "<group>"; };
+		7D25A5B316373A2100E316DC /* GlassboxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlassboxCell.m; sourceTree = "<group>"; };
+		7D25A5B516373B9300E316DC /* GlassboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlassboxViewController.h; sourceTree = "<group>"; };
+		7D25A5B616373B9300E316DC /* GlassboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlassboxViewController.m; sourceTree = "<group>"; };
+		7D25A5B816374CFA00E316DC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		7D25A5BA163752D300E316DC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../../Woodbox/Woodbox/Player.h; sourceTree = "<group>"; };
+		7D25A5BB163752D300E316DC /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = ../../Woodbox/Woodbox/Player.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D25A5B916374CFA00E316DC /* MobileCoreServices.framework in Frameworks */,
 				7D25A58D163622F000E316DC /* UIKit.framework in Frameworks */,
 				7D25A58F163622F000E316DC /* Foundation.framework in Frameworks */,
 				7D25A591163622F000E316DC /* CoreGraphics.framework in Frameworks */,
@@ -73,6 +85,7 @@
 		7D25A58B163622F000E316DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D25A5B816374CFA00E316DC /* MobileCoreServices.framework */,
 				7D25A58C163622F000E316DC /* UIKit.framework */,
 				7D25A58E163622F000E316DC /* Foundation.framework */,
 				7D25A590163622F000E316DC /* CoreGraphics.framework */,
@@ -86,8 +99,14 @@
 				7D25A59B163622F000E316DC /* GlassboxAppDelegate.h */,
 				7D25A59C163622F000E316DC /* GlassboxAppDelegate.m */,
 				7D25A5A4163622F000E316DC /* MainStoryboard.storyboard */,
-				7D25A5A7163622F000E316DC /* GlassboxViewController.h */,
-				7D25A5A8163622F000E316DC /* GlassboxViewController.m */,
+				7D25A5B516373B9300E316DC /* GlassboxViewController.h */,
+				7D25A5B616373B9300E316DC /* GlassboxViewController.m */,
+				7D25A5BA163752D300E316DC /* Player.h */,
+				7D25A5BB163752D300E316DC /* Player.m */,
+				7D25A5AF163623EE00E316DC /* GlassboxTableViewController.h */,
+				7D25A5B0163623EE00E316DC /* GlassboxTableViewController.m */,
+				7D25A5B216373A2100E316DC /* GlassboxCell.h */,
+				7D25A5B316373A2100E316DC /* GlassboxCell.m */,
 				7D25A593163622F000E316DC /* Supporting Files */,
 			);
 			path = Glassbox;
@@ -176,7 +195,10 @@
 			files = (
 				7D25A599163622F000E316DC /* main.m in Sources */,
 				7D25A59D163622F000E316DC /* GlassboxAppDelegate.m in Sources */,
-				7D25A5A9163622F000E316DC /* GlassboxViewController.m in Sources */,
+				7D25A5B1163623EE00E316DC /* GlassboxTableViewController.m in Sources */,
+				7D25A5B416373A2100E316DC /* GlassboxCell.m in Sources */,
+				7D25A5B716373B9300E316DC /* GlassboxViewController.m in Sources */,
+				7D25A5BC163752D300E316DC /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +279,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Glassbox/Glassbox-Prefix.pch";
 				INFOPLIST_FILE = "Glassbox/Glassbox-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -268,6 +291,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Glassbox/Glassbox-Prefix.pch";
 				INFOPLIST_FILE = "Glassbox/Glassbox-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

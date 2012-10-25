@@ -17,8 +17,10 @@
 
 #pragma mark - // DEFINITIONS (Private) //
 
-@interface GlassboxViewController () <GlassboxTableViewDelegate> // UIImagePickerControllerDelegate, UINavigationControllerDelegate
-@property (nonatomic, weak) UITableView *tableView;
+@interface GlassboxViewController () // UIImagePickerControllerDelegate, UINavigationControllerDelegate, GlassboxTableViewDatasource, UITableViewDataSource
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) GlassboxTableViewController *tableViewController;
+- (void)setup;
 - (void)alertAddPlayer;
 - (void)alertInvalidPlayer;
 - (void)alertAddPhoto;
@@ -44,31 +46,47 @@
 
 #pragma mark - // INITS AND LOADS //
 
+- (void)setup
+{
+    NSLog(@"[setup]");
+    if (!self.tableViewController)
+    {
+        self.tableViewController = [[GlassboxTableViewController alloc] initWithStyle:UITableViewStylePlain];
+//        self.tableViewController.datasource = self.tableViewController;
+        self.tableViewController.tableView = self.tableView;
+        self.tableView.dataSource = self.tableViewController;
+//        [self addChildViewController:self.tableViewController];
+    }
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    NSLog(@"[initWithNibNameBundle]");
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        [self setup];
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    NSLog(@"[viewDidLoad]");
     [super viewDidLoad];
+    [self setup];
 	// Do any additional setup after loading the view.
-    for (int i = 0; i < self.childViewControllers.count; i++)
-    {
-        for (int j = 0; j < [[[self.childViewControllers objectAtIndex:i] childViewControllers] count]; j++)
-        {
-            if ([[[((UINavigationController *)[self.childViewControllers objectAtIndex:i]) childViewControllers] objectAtIndex:j] isKindOfClass:[GlassboxTableViewController class]])
-            {
-                self.tableView = [(GlassboxTableViewController *)[[[self.childViewControllers objectAtIndex:i] childViewControllers] objectAtIndex:j] tableView];
-                [[[[self.childViewControllers objectAtIndex:i] childViewControllers] objectAtIndex:j] setDatasource:self];
-                return;
-            }
-        }
-    }
+//    for (int i = 0; i < self.childViewControllers.count; i++)
+//    {
+//        for (int j = 0; j < [[[self.childViewControllers objectAtIndex:i] childViewControllers] count]; j++)
+//        {
+//            if ([[[((UINavigationController *)[self.childViewControllers objectAtIndex:i]) childViewControllers] objectAtIndex:j] isKindOfClass:[GlassboxTableViewController class]])
+//            {
+//                self.tableView = [(GlassboxTableViewController *)[[[self.childViewControllers objectAtIndex:i] childViewControllers] objectAtIndex:j] tableView];
+//                [[[[self.childViewControllers objectAtIndex:i] childViewControllers] objectAtIndex:j] setDatasource:self];
+//                return;
+//            }
+//        }
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,12 +97,12 @@
 
 #pragma mark - // DELEGATED FUNCTIONS (GlassboxTableViewController) //
 
-- (void)addPlayer
+#pragma mark - // PUBLIC FUNCTIONS //
+
+- (IBAction)addPlayer:(UIBarButtonItem *)sender
 {
     [self alertAddPlayer];
 }
-
-#pragma mark - // PUBLIC FUNCTIONS //
 
 #pragma mark - // PRIVATE FUNCTIONS //
 
@@ -122,6 +140,11 @@
 //            return;
 //        }
 //    }
+    NSLog(@"[TEST] alertAddPhoto");
+    if (self.tableView) NSLog(@"[TEST] self.tableView");
+    if (self.tableView.dataSource) NSLog(@"[TEST] self.tableView.dataSource");
+    if (self.tableViewController) NSLog(@"[TEST] self.tableViewController");
+//    if (self.tableViewController.datasource) NSLog(@"[TEST] self.tableViewController.datasource");
     [self.tableView reloadData];
 }
 
@@ -160,7 +183,8 @@
             {
                 if ([[[alertView textFieldAtIndex:0] text] length] != 0)
                 {
-                    [self.arrayOfPlayers addObject:[[Player alloc] initWithUsername:[[alertView textFieldAtIndex:0] text]]];
+//                    [self.arrayOfPlayers addObject:[[Player alloc] initWithUsername:[[alertView textFieldAtIndex:0] text]]];
+                    [self.tableViewController.arrayOfPlayers addObject:[[Player alloc] initWithUsername:[[alertView textFieldAtIndex:0] text]]];
                     [self alertAddPhoto];
                 }
                 else [self alertInvalidPlayer];

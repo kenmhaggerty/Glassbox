@@ -13,34 +13,60 @@
 #import "GlassboxTableViewController.h"
 #import "GlassboxCell.h"
 #import "Player.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #pragma mark - // DEFINITIONS (Private) //
 
 #define SIDEBAR_WIDTH_PERCENT 0.75
 
-@interface GlassboxTableViewController ()
+@interface GlassboxTableViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+//@property (nonatomic, weak) IBOutlet UITableView *tableView;
+- (void)setup;
 @end
 
 @implementation GlassboxTableViewController
 
 #pragma mark - // SETTERS AND GETTERS //
 
-@synthesize datasource = _datasource;
+@synthesize arrayOfPlayers = _arrayOfPlayers;
+//@synthesize tableView = _tableView;
+//@synthesize datasource = _datasource;
+
+- (void)setArrayOfPlayers:(NSMutableArray *)arrayOfPlayers
+{
+    _arrayOfPlayers = arrayOfPlayers;
+}
+
+- (NSMutableArray *)arrayOfPlayers
+{
+    if (!_arrayOfPlayers) _arrayOfPlayers = [[NSMutableArray alloc] init];
+//    [_arrayOfPlayers addObject:[[Player alloc] initWithUsername:@"Ken H.:"]];
+    return _arrayOfPlayers;
+}
 
 #pragma mark - // INITS AND LOADS //
 
+- (void)setup
+{
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
+    NSLog(@"[initWithStyle]");
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        [self setup];
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    NSLog(@"[viewDidLoad]");
     [super viewDidLoad];
+    [self setup];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -61,12 +87,102 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - // PRIVATE FUNCTIONS (Miscellaneous) //
+#pragma mark - // PUBLIC FUNCTIONS //
 
-- (IBAction)addPlayer
+- (IBAction)addPlayer:(UIBarButtonItem *)sender
 {
-    [self.datasource addPlayer];
+    [self alertAddPlayer];
 }
+
+#pragma mark - // PRIVATE FUNCTIONS //
+
+- (void)alertAddPlayer
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add New Player" message:@"Please type player name:" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = 1;
+    [alert show];
+}
+
+- (void)alertInvalidPlayer
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Name" message:@"Please type another name:" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = 1;
+    [alert show];
+}
+
+- (void)alertAddPhoto
+{
+    NSLog(@"[TEST] alertAddPhoto");
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+        if ([mediaTypes containsObject:(NSString *)kUTTypeImage])
+        {
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.delegate = self;
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePickerController.allowsEditing = YES;
+//            imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+//            imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            imagePickerController.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+//            [self presentViewController:imagePickerController animated:YES completion:nil];
+            imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+            [self presentModalViewController:imagePickerController animated:YES];
+            return;
+        }
+    }
+    NSLog(@"[TEST] No camera available");
+    [self.tableView reloadData];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    if (!image) image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (image)
+    {
+        [[self.arrayOfPlayers lastObject] setPhoto:[[UIImageView alloc] initWithImage:image]];
+    }
+    [self dismissImagePicker];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissImagePicker];
+}
+
+- (void)dismissImagePicker
+{
+//    [self dismissViewControllerAnimated:YES completion:^{
+//        [self.tableView reloadData];
+//    }];
+    [self dismissModalViewControllerAnimated:YES];
+    [self.tableView reloadData];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) NSLog(@"Cancel tapped");
+    else
+    {
+        if (alertView.tag == 1)
+        {
+            if (buttonIndex == 1)
+            {
+                if ([[[alertView textFieldAtIndex:0] text] length] != 0)
+                {
+                    [self.arrayOfPlayers addObject:[[Player alloc] initWithUsername:[[alertView textFieldAtIndex:0] text]]];
+                    [self alertAddPhoto];
+                }
+                else [self alertInvalidPlayer];
+            }
+        }
+    }
+}
+
+#pragma mark - // PRIVATE FUNCTIONS (Miscellaneous) //
 
 // TableView data source //
 
@@ -79,18 +195,37 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.datasource.arrayOfPlayers.count;
+//    return self.datasource.arrayOfPlayers.count;
+    return self.arrayOfPlayers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"GlassboxCell";
-    GlassboxCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"New Cell";
+//    GlassboxCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+//    GlassboxCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    cell.name.text = [[self.datasource.arrayOfPlayers objectAtIndex:indexPath.row] username];
-    cell.action.text = @"LOADED SUCCESSFULLY";
-    cell.time.text = @"Just now";
-    cell.photo = [[self.datasource.arrayOfPlayers objectAtIndex:indexPath.row] photo];
+    if (cell == nil)
+    {
+//        cell = [[GlassboxCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"New Cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"New Cell"];
+    }
+    
+//    cell.name.text = [[self.arrayOfPlayers objectAtIndex:indexPath.row] username];
+//    cell.action.text = @"LOADED SUCCESSFULLY";
+//    cell.time.text = @"Just now";
+//    cell.photo = [[self.arrayOfPlayers objectAtIndex:indexPath.row] photo];
+    
+    cell.textLabel.text = [[self.arrayOfPlayers objectAtIndex:indexPath.row] username];
+    cell.detailTextLabel.text = @"UITableViewCell test";
+    
+//    [((UILabel *)[cell viewWithTag:1]) setText:[[self.arrayOfPlayers objectAtIndex:indexPath.row] username]];
+//    [((UILabel *)[cell viewWithTag:2]) setText:@"has been added."];
+//    [((UILabel *)[cell viewWithTag:3]) setText:@"Just now"];
+//    [((UIImageView *)[cell viewWithTag:4]) setImage:[[[self.arrayOfPlayers objectAtIndex:indexPath.row] photo] image]];
+    
+    [cell.contentView setFrame:CGRectMake(cell.contentView.frame.origin.x, cell.contentView.frame.origin.y, cell.contentView.frame.size.width, 120)];
     
     return cell;
 }
